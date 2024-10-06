@@ -4,6 +4,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 
 from constants import states
+from constants.admins import ADMINS
 from database.reciepe_table import get_single_recipe
 from database.user_table import add_favourite
 from keyboards.replies import back_button, main_reply_keyboard
@@ -30,7 +31,7 @@ def get_recipes_message_handler(update: Update, context: CallbackContext):
         return states.RECIPES
 
     if update.message.text == "Back":
-        update.message.reply_text("Click one of the buttons in the below", reply_markup=main_reply_keyboard())
+        update.message.reply_text("Click one of the buttons in the below", reply_markup=main_reply_keyboard(ADMINS.__contains__(update.message.from_user.id)))
         return states.MENU
 
 
@@ -52,5 +53,5 @@ def manage_recipe_message_handler(update: Update, context: CallbackContext):
     if update.message.text == "Back":
         # context.bot.delete_message(chat_id=update.callback_query.message.chat_id,
         #                            message_id=update.callback_query.message.message_id)
-        update.message.reply_text("Click one of the buttons in the below", reply_markup=main_reply_keyboard())
+        update.message.reply_text("Click one of the buttons in the below", reply_markup=main_reply_keyboard(ADMINS.__contains__(update.message.from_user.id)))
         return states.MENU

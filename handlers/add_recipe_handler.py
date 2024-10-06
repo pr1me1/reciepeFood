@@ -4,6 +4,7 @@ from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import CallbackContext
 
 from constants import states
+from constants.admins import ADMINS
 from constants.constants import INGREDIENTS, MEASUREMENTS
 from database.reciepe_table import add_recipe
 from keyboards.replies import done_button, main_reply_keyboard
@@ -40,7 +41,7 @@ def add_ingredient_to_recipe(update: Update, context: CallbackContext):
         meas = context.user_data[MEASUREMENTS]
         asyncio.run(add_recipe(name=name, ingredients=ingredient, measurement=meas))
         update.message.reply_text(name + " has been successfully added to recipe list",
-                                  reply_markup=main_reply_keyboard())
+                                  reply_markup=main_reply_keyboard(ADMINS.__contains__(update.message.from_user.id)))
         return states.MENU
 
     else:

@@ -23,7 +23,7 @@ def start_bot(update: Update, context: CallbackContext):
 # menu
 def menu_handler(update: Update, context: CallbackContext):
     if not update.message.text:
-        update.message.reply_text("Please enter info in text version", reply_markup=main_reply_keyboard())
+        update.message.reply_text("Please enter info in text version", reply_markup=main_reply_keyboard(ADMINS.__contains__(update.message.from_user.id)))
         return states.MENU
 
     if update.message.text == "Foods list":
@@ -42,7 +42,7 @@ def menu_handler(update: Update, context: CallbackContext):
     if update.message.text == "Saved ones":
         favs = asyncio.run(get_favourites(update.message.from_user.id))
         if not favs:
-            update.message.reply_text("Your favourite list is empty", reply_markup=main_reply_keyboard())
+            update.message.reply_text("Your favourite list is empty", reply_markup=main_reply_keyboard(ADMINS.__contains__(update.message.from_user.id)))
             return states.MENU
         else:
             update.message.reply_text("Here your favorite recipes: ", reply_markup=back_button())
